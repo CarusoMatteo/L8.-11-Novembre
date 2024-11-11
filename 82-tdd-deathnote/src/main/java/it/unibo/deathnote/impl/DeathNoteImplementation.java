@@ -8,10 +8,25 @@ import it.unibo.deathnote.api.DeathNote;
 
 public class DeathNoteImplementation implements DeathNote {
 
+    /*
+     * TODO: Try to implement the nested class "Death"
+     * 
+     * Death has:
+     * - name
+     * - cause
+     * - details
+     * - time of write
+     * 
+     * DeathNoteImplementation will have:
+     * - a List of Deaths.
+     * - the most recent Death.
+     */
     private static final String DEFAULT_DEATH_CAUSE = "heart attack";
+    private static final int DEATH_CAUSE_MAX_CHANGE_MILLIS = 40;
+    private static final int DETAILS_MAX_CHANGE_MILLIS = 6040;
 
-    private final Map<String, String> deathCauses = new HashMap<>();
-    private final Map<String, String> details = new HashMap<>();
+    private final Map<String, String> deathCauseMap = new HashMap<>();
+    private final Map<String, String> detailsMap = new HashMap<>();
 
     private String latestNameWritten;
     private long latestWriteTime;
@@ -21,11 +36,10 @@ public class DeathNoteImplementation implements DeathNote {
      */
     @Override
     public String getRule(final int ruleNumber) {
-        try {
-            return RULES.get(ruleNumber - 1);
-        } catch (final Exception e) {
+        if (ruleNumber <= 0 || ruleNumber > RULES.size()) {
             throw new IllegalArgumentException("Rule " + ruleNumber + "is not a valid rule.");
         }
+        return RULES.get(ruleNumber - 1);
     }
 
     /**
@@ -37,8 +51,8 @@ public class DeathNoteImplementation implements DeathNote {
 
         this.latestNameWritten = name;
 
-        this.deathCauses.put(this.latestNameWritten, null);
-        this.details.put(this.latestNameWritten, null);
+        this.deathCauseMap.put(this.latestNameWritten, null);
+        this.detailsMap.put(this.latestNameWritten, null);
         this.latestWriteTime = System.currentTimeMillis();
     }
 
@@ -54,8 +68,8 @@ public class DeathNoteImplementation implements DeathNote {
             throw new IllegalStateException("cause is null.");
         }
 
-        if (getElapsedTime() <= 40) {
-            this.deathCauses.put(this.latestNameWritten, cause);
+        if (getElapsedTime() <= DEATH_CAUSE_MAX_CHANGE_MILLIS) {
+            this.deathCauseMap.put(this.latestNameWritten, cause);
             return true;
         }
 
@@ -74,8 +88,8 @@ public class DeathNoteImplementation implements DeathNote {
             throw new IllegalStateException("details is null.");
         }
 
-        if (getElapsedTime() <= 6040) {
-            this.details.put(latestNameWritten, details);
+        if (getElapsedTime() <= DETAILS_MAX_CHANGE_MILLIS) {
+            this.detailsMap.put(latestNameWritten, details);
             return true;
         }
 
@@ -87,7 +101,7 @@ public class DeathNoteImplementation implements DeathNote {
      */
     @Override
     public String getDeathCause(final String name) {
-        final String deathCause = this.deathCauses.get(name);
+        final String deathCause = this.deathCauseMap.get(name);
 
         return deathCause != null ? deathCause : DEFAULT_DEATH_CAUSE;
     }
@@ -97,7 +111,7 @@ public class DeathNoteImplementation implements DeathNote {
      */
     @Override
     public String getDeathDetails(final String name) {
-        final String details = this.details.get(name);
+        final String details = this.detailsMap.get(name);
 
         return details != null ? details : "";
     }
@@ -107,7 +121,7 @@ public class DeathNoteImplementation implements DeathNote {
      */
     @Override
     public boolean isNameWritten(final String name) {
-        return this.deathCauses.containsKey(name);
+        return this.deathCauseMap.containsKey(name);
     }
 
     private long getElapsedTime() {
