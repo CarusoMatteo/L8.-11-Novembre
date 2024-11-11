@@ -1,14 +1,15 @@
 package it.unibo.mvc;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -27,12 +28,18 @@ public class MiniGUI {
      * Creates a new {@link MiniGUI}.
      */
     public MiniGUI() {
-        final JPanel canvas = new JPanel();
-        canvas.setLayout(new BorderLayout());
-        final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
-        frame.setContentPane(canvas);
+        final JPanel boxCanvas = new JPanel();
+        final JPanel buttonCanvas = new JPanel();
+        frame.setContentPane(boxCanvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        boxCanvas.setLayout(new BoxLayout(boxCanvas, BoxLayout.X_AXIS));
+        buttonCanvas.setLayout(new BorderLayout());
+
+        boxCanvas.add(buttonCanvas, BoxLayout.X_AXIS);
+        final JButton write = new JButton("Print a random number on standard output");
+        buttonCanvas.add(write, BorderLayout.CENTER);
+
         /*
          * Handlers
          */
@@ -52,7 +59,7 @@ public class MiniGUI {
          * multimonitor setups, other facilities exist (see the Java
          * documentation about this issue). It is MUCH better than manually
          * specify the size of a window in pixel: it takes into account the
-         * current resolution.
+         * current resolution.5
          */
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
@@ -78,7 +85,7 @@ public class MiniGUI {
      * Launches the application.
      *
      * @param args
-     *            ignored
+     *             ignored
      */
     public static void main(final String... args) {
         new MiniGUI().display();
