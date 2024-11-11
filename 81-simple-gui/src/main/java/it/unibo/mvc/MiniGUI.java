@@ -30,18 +30,19 @@ public class MiniGUI {
      */
     public MiniGUI() {
         final JPanel boxCanvas = new JPanel();
-        final JPanel buttonCanvas = new JPanel();
-        frame.setContentPane(boxCanvas);
+        final JPanel canvas = new JPanel();
+        frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         boxCanvas.setLayout(new BoxLayout(boxCanvas, BoxLayout.X_AXIS));
-        buttonCanvas.setLayout(new BorderLayout());
+        canvas.setLayout(new BorderLayout());
+
+        canvas.add(boxCanvas, BorderLayout.CENTER);
+        final JButton write = new JButton("Print a random number on standard output");
+        boxCanvas.add(write, BorderLayout.CENTER);
 
         final JTextField resuTextField = new JTextField("Result");
-        buttonCanvas.add(resuTextField, BorderLayout.NORTH);
-        boxCanvas.add(buttonCanvas, BoxLayout.X_AXIS);
-        final JButton write = new JButton("Print a random number on standard output");
-        buttonCanvas.add(write, BorderLayout.CENTER);
+        canvas.add(resuTextField, BorderLayout.NORTH);
 
         /*
          * Handlers
