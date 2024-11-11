@@ -62,10 +62,6 @@ public class DeathNoteImplementation implements DeathNote {
         return false;
     }
 
-    private long getElapsedTime() {
-        return System.currentTimeMillis() - this.latestWriteTime;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -112,5 +108,9 @@ public class DeathNoteImplementation implements DeathNote {
     @Override
     public boolean isNameWritten(final String name) {
         return this.deathCauses.containsKey(name);
+    }
+
+    private long getElapsedTime() {
+        return System.currentTimeMillis() - this.latestWriteTime;
     }
 }
