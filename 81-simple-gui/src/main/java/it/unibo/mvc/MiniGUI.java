@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -36,6 +37,8 @@ public class MiniGUI {
         boxCanvas.setLayout(new BoxLayout(boxCanvas, BoxLayout.X_AXIS));
         buttonCanvas.setLayout(new BorderLayout());
 
+        final JTextField resuTextField = new JTextField("Result");
+        buttonCanvas.add(resuTextField, BorderLayout.NORTH);
         boxCanvas.add(buttonCanvas, BoxLayout.X_AXIS);
         final JButton write = new JButton("Print a random number on standard output");
         buttonCanvas.add(write, BorderLayout.CENTER);
